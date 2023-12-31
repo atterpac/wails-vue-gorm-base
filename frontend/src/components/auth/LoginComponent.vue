@@ -7,17 +7,16 @@
             <h1>Login</h1>
             <input type='text' placeholder='Username'/>
             <input type='password' placeholder='Password'/>
-            <button>Login</button>
-            <div>or</div>
-            <button @click="onClick('/register')">Register</button>
-            <button>Reset Password</button>
+            <button class='login-btn'>Login</button>
+            <button class='btn' @click="onClick('/register')">Register</button>
+            <button class='btn'>Reset Password</button>
         </div>
     </section>
 </template>
 
 <script lang="ts" setup>
 import { router } from '../../router';
-import { User } from '../../../wailsjs/go/models';
+// import { User } from '../../../wailsjs/go/models';
 
 const onClick = (path: string) => {
     console.log('clicked');
@@ -27,7 +26,7 @@ const onClick = (path: string) => {
 
 <style scoped>
 section {
-    background-color: #282c34;
+    background-color: var(--background-color-light);
     border-radius: 10px;
     display: flex;
     align-items: center;
@@ -35,6 +34,7 @@ section {
     flex-direction: row;
     height: 95%;
     width: 95%;
+    box-shadow: 0px 0px 20px 0px hsla(var(--hue), 70%, 20%, 0.75);
 }
 
 .logo {
@@ -43,7 +43,7 @@ section {
     flex: 1;
     align-items: center;
     justify-content: center;
-    background-color: #383c44;
+    background-color: var(--background-color);
     height: 100%;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
@@ -61,8 +61,27 @@ img {
     justify-content: center;
     width: 50%;
     height: 50%;
-    background-color: #282c34;
+    background-color: var(--background-color-light);
     border-radius: 5px;
+}
+
+.btn {
+    background-color: var(--gray-2);
+    color: var(--text-color);
+}
+
+.btn:hover {
+    background-color: var(--gray-3);
+}
+
+.login-btn {
+    background-color: var(--primary-dark);
+    color: var(--text-color-light);
+}
+
+.login-btn:hover {
+    background-color: var(--primary-color);
+    color: var(--text-color);
 }
 
 input {
@@ -70,9 +89,12 @@ input {
     height: 10%;
     margin: 10px;
     border-radius: 5px;
+    background-color: var(--background-color);
+    color: var(--text-color);
     border: none;
     outline: none;
     padding: 5px;
+    padding-left: 10px;
 }
 
 button {

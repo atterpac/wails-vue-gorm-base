@@ -1,68 +1,97 @@
 <script lang="ts" setup>
-import {reactive} from 'vue'
 
-const data = reactive({
-  name: "",
-  resultText: "Please enter your name below 👇",
-})
+const otherColors = [
+    "primary-color",
+    "primary-dark",
+    "secondary-color",
+    "secondary-dark",
+    "ternary-color",
+    "ternary-dark",
+    "quaternary-color",
+    "quaternary-dark",
+    ]
 
-function greet() {
-    console.log(data.name)
-}
+const colors = [
+    "red",
+    "green",
+    "yellow",
+    "orange",
+    "blue",
+    "purple",
+    "pink",
+]
 
+const darkColors = [
+    "red-dark",
+    "green-dark",
+    "yellow-dark",
+    "orange-dark",
+    "blue-dark",
+    "purple-dark",
+    "pink-dark",
+]
 </script>
 
 <template>
-  <main>
-    <div id="result" class="result">{{ data.resultText }}</div>
-    <div id="input" class="input-box">
-      <input id="name" v-model="data.name" autocomplete="off" class="input" type="text"/>
-      <button class="btn" @click="greet">Greet</button>
+    <div class="color-swatches">
+        <div>
+            <div class="colors" v-for="color in otherColors" :style="`background-color: var(--${color})`"> {{ color }} </div>
+        </div>
+        <div>
+            <div class="colors" v-for="color in colors" :style="`background-color: var(--${color})`"> {{ color }} </div>
+        </div>
+        <div>
+            <div class="colors" v-for="color in darkColors" :style="`background-color: var(--${color})`"> {{ color }} </div>
+        </div>
     </div>
-  </main>
 </template>
 
-<style scoped>
-.result {
-  height: 20px;
-  line-height: 20px;
-  margin: 1.5rem auto;
+<style>
+.color-swatches {
+    margin-top: 25%;
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: 100%;
+    justify-content: space-evenly;
 }
 
-.input-box .btn {
-  width: 60px;
-  height: 30px;
-  line-height: 30px;
-  border-radius: 3px;
-  border: none;
-  margin: 0 0 0 20px;
-  padding: 0 8px;
-  cursor: pointer;
+.colors {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    width: 200px;
+    border-radius: 5px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 20px;
 }
 
-.input-box .btn:hover {
-  background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);
-  color: #333333;
+.background {
+    background-color: hsl(50, var(--saturation), var(--lightness));
 }
 
-.input-box .input {
-  border: none;
-  border-radius: 3px;
-  outline: none;
-  height: 30px;
-  line-height: 30px;
-  padding: 0 10px;
-  background-color: rgba(240, 240, 240, 1);
-  -webkit-font-smoothing: antialiased;
+.background-light {
+    background-color: var(--background-color-light);
 }
 
-.input-box .input:hover {
-  border: none;
-  background-color: rgba(255, 255, 255, 1);
+.accent {
+    background-color: var(--accent);
 }
 
-.input-box .input:focus {
-  border: none;
-  background-color: rgba(255, 255, 255, 1);
+.color-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.color-wrapper > div {
+    margin: 10px;
+    width: 100px;
+    height: 100px;
+    border-radius: 5px;
 }
 </style>

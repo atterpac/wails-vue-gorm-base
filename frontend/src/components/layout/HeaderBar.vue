@@ -1,10 +1,10 @@
 <template>
     <section class="header" :style='{height: props.height}' >
-        <h3>I am Header</h3>
     </section>
 </template>
 
 <script setup lang='ts'>
+    import ArrowDown from '../../assets/hero_icons/ArrowDown.vue'
     const props = defineProps({
         height: String 
     })

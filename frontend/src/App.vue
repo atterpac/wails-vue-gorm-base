@@ -8,11 +8,15 @@ import { RouterView } from 'vue-router'
 <template>
     <section class="app">
         <HeaderBar height='48px' />
-        <NavBar class='nav'/>
+        <div class='nav'>
+            <NavBar />
+        </div>
         <div class='view'>
             <router-view/>
         </div>
-        <FloatingDrawer :visible='true' />
+        <FloatingDrawer 
+            :visible='true' 
+        />
     </section>
 </template>
 
@@ -35,9 +39,8 @@ import { RouterView } from 'vue-router'
 
 .view {
     display: flex;
-    margin-left: 10%;
     height: 95%;
-    width: 87%;
+    width: 75%;
     border-radius: 5px;
     justify-content: center;
     align-items: center;
