@@ -1,19 +1,20 @@
 <template>
-    <section class="nav-bar" :style="{ width: props.isCollapse ? '24px' : '180px' }">
-        <CubeTransparent class="logo" hero_stroke="var(--primary-color)" hero_width='48px' hero_height='48px'/>
-        <div class='nav-item'>
-            <button 
-                class='nav-button'
-                v-for="item in navigationItems" 
-                :key=item.path
-                @click='onClick(item.path)'>
-                <div class='icon'>
-                    <Component :is='item.icon' hero_stroke="var(--primary-color)" hero_width='24px' hero_height='24px' />
-                </div>
-                <div class='name'>
-                    {{item.name}}
-                </div>
-            </button>
+    <section class="container" :style="{ width: isCollapse ? '56px' : '140px' }">
+        <CubeTransparent @click='toggleCollapse' class="logo" hero_stroke="var(--primary-color)" hero_width='48px' hero_height='48px'/>
+        <div class='nav-bar'>
+            <div class='nav-item' v-for="item in navigationItems" :key="item.path">
+                <button 
+                    class='nav-button'
+                    :key=item.path
+                    @click='onClick(item.path)'>
+                    <div class='icon'>
+                        <Component :is='item.icon' hero_style="filled" hero_stroke="var(--primary-color)" hero_fill="var(--primary-color)" hero_width='24px' hero_height='24px' />
+                    </div>
+                    <div class='name' v-if='!isCollapse'>
+                        {{item.name}}
+                    </div>
+                </button>
+            </div>
         </div>
     </section>
 </template>
@@ -26,6 +27,7 @@ import HomeIcon from '../../assets/hero_icons/HomeIcon.vue'
 import UserIcon from '../../assets/hero_icons/UserIcon.vue'
 import ColorSwatch from '../../assets/hero_icons/ColorSwatch.vue'
 import type { Component } from 'vue';
+import { ref } from 'vue';
 
 type NavigationItem = {
     name: string;
@@ -49,14 +51,21 @@ const navigationItems: NavigationItem[] = [
         path: '/colors',
         icon: ColorSwatch
     },
+    {
+        name: 'Events',
+        path: '/events',
+        icon: ColorSwatch
+    },
 ]
 
-const props = defineProps({
-    isCollapse: {
-        type: Boolean,
-        default: false
-    }
-})
+const isCollapse = ref(false);
+
+const toggleCollapse = () => {
+    isCollapse.value = !isCollapse.value;
+    // Get .nav-button and change justify-content to center
+    var root = document.querySelector(':root') as HTMLElement;
+    root.style.setProperty('--nav-justify-content', isCollapse.value ? 'center' : 'flex-start');
+}
 
 const onClick = (path: RouteLocationRaw) => {
     router.push(path);
@@ -64,30 +73,36 @@ const onClick = (path: RouteLocationRaw) => {
 </script>
 
 <style scoped>
+:root {
+    --nav-justify-content: flex-start;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--background-color-light);
+
+}
 .nav-bar {
-    position: fixed;
-    left: 0;
-    top: 24px;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    height: 100%;
-    z-index: 100;
 }
 
 .nav-item {
     height: 36px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .nav-button {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: var(--nav-justify-content);
     height: 100%;
-}
-
-.icon {
-    padding-right: 10px;
 }
 
 button {
@@ -98,20 +113,23 @@ button {
     color: white;
     font-size: 1rem;
     text-align: center;
-    padding: 0px;
-    margin: 5px;
     cursor: pointer;
     border-radius: 5px;
 }
 
-button:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+.icon {
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.nav-item:hover {
+    background-color: var(--gray-2);
 }
 
 .logo {
+    margin-top: 24px;
     margin-bottom: 10px;
     cursor: pointer;
 }
-
 </style>
 

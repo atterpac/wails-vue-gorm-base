@@ -33,27 +33,34 @@ const darkColors = [
 </script>
 
 <template>
-    <div class="color-swatches">
-        <div>
-            <div class="colors" v-for="color in otherColors" :style="`background-color: var(--${color})`"> {{ color }} </div>
+    <section>
+        <div class="color-swatches">
+            <div>
+                <div class="colors" v-for="color in otherColors" :style="`background-color: var(--${color})`"> {{ color }} </div>
+            </div>
+            <div>
+                <div class="colors" v-for="color in colors" :style="`background-color: var(--${color})`"> {{ color }} </div>
+            </div>
+            <div>
+                <div class="colors" v-for="color in darkColors" :style="`background-color: var(--${color})`"> {{ color }} </div>
+            </div>
         </div>
-        <div>
-            <div class="colors" v-for="color in colors" :style="`background-color: var(--${color})`"> {{ color }} </div>
-        </div>
-        <div>
-            <div class="colors" v-for="color in darkColors" :style="`background-color: var(--${color})`"> {{ color }} </div>
-        </div>
-    </div>
+    </section>
 </template>
 
-<style>
-.color-swatches {
-    margin-top: 25%;
+<style scoped>
+section {
+    background-color: var(--background-color-light);
     display: flex;
-    flex-direction: row;
-    height: 100%;
-    width: 100%;
-    justify-content: space-evenly;
+    align-items: center;
+    justify-content: center;
+}
+
+.color-swatches {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
 }
 
 .colors {
@@ -67,18 +74,6 @@ const darkColors = [
     font-size: 1.5rem;
     font-weight: bold;
     margin: 20px;
-}
-
-.background {
-    background-color: hsl(50, var(--saturation), var(--lightness));
-}
-
-.background-light {
-    background-color: var(--background-color-light);
-}
-
-.accent {
-    background-color: var(--accent);
 }
 
 .color-wrapper {

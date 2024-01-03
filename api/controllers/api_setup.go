@@ -22,7 +22,6 @@ type App struct {
 // NewApp creates a new App application struct
 func NewApp(name string) *App {
 	return &App{
-		ctx: context.Background(),
 		Name: name,
 	}
 }
@@ -30,6 +29,8 @@ func NewApp(name string) *App {
 // startup is called when the app starts. The context is saved
 // so we can call the runtime methods
 func (a *App) Startup(ctx context.Context) {
+	a.ctx = ctx
+	a.startTimerEmit()
 	a.Db = InitSqliteDB(a.Name, "changeme.db")
 	err := a.Migration()
 	if err != nil {
