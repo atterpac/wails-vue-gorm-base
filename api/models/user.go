@@ -24,9 +24,9 @@ func (u *User) Verify() (bool, error) {
 	if u.Username == "" {
 		return false, errors.New("Username is required")
 	}
-	if u.Email == "" {
-		return false, errors.New("Email is required")
-	}
+	// if u.Email == "" {
+	// 	return false, errors.New("Email is required")
+	// }
 	if u.Password == "" {
 		return false, errors.New("Password is required")
 	}

@@ -1,10 +1,14 @@
 package controllers
 
-import "changeme/api/models"
+import (
+	"changeme/api/models"
+	"fmt"
+)
 
 func (a *App) CreateUser(user models.User) error {
 	ok, err := user.Verify()
 	if !ok {
+		fmt.Println(err)
 		return err
 	}
 	err = user.Create(a.Db)

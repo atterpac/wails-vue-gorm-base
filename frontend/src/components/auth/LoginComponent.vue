@@ -6,11 +6,11 @@
             </div>
             <div class='login'>
                 <h1>Login</h1>
-                <input type='text' placeholder='Username'/>
-                <input type='password' placeholder='Password'/>
-                <button class='login-btn'>Login</button>
+                <input type='text' placeholder='Username' v-model="user.username"/>
+                <input type='password' placeholder='Password' v-model="user.password"/>
+                <button class='login-btn' @click="Submit()">Login</button>
                 <button class='btn' @click="onClick('/register')">Register</button>
-                <button class='btn'>Reset Password</button>
+                <button class='btn' @click="onClick('/reset')">Reset Password</button>
             </div>
         </div>
     </section>
@@ -18,6 +18,17 @@
 
 <script lang="ts" setup>
 import { router } from '../../router';
+import { CreateUser } from '../../../wailsjs/go/controllers/App';
+import { models } from '../../../wailsjs/go/models';
+import { ref } from 'vue';
+const { User } = models;
+
+
+const user = ref<User | null>(null);
+
+const Submit = () => {
+    CreateUser(user);
+}
 
 const onClick = (path: string) => {
     console.log('clicked');
