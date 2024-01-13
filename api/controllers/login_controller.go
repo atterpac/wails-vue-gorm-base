@@ -6,24 +6,29 @@ import (
 )
 
 
-func (a *App) RegisterUser(user models.User) error {
-	ok, err := user.Verify()
-	if !ok {
+func (a *App) RegisterUser(reg models.Register) error {
+	err := reg.Verify()
+	if err != nil {
 		return err
 	}
-	err = user.Create(a.Db)
+	newUser := models.User {
+		Username: reg.Username,
+		Password: reg.Password,
+		Email: reg.Email,
+	}
+	err = newUser.Create(a.Db)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *App) LoginUser(user models.User) (string, error) {
-	err := user.VerifyLogin()
+func (a *App) LoginUser(login models.Login) (string, error) {
+	err := login.Verify()
 	if err != nil {
 		return "", err
 	}
-	u, err := models.GetUserByEmail(a.Db, user.Email)
+	u, err := models.GetUserByUsername(a.Db, login.Username)
 	if err != nil {
 		return "", err
 	}

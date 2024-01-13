@@ -4,9 +4,15 @@ import (
 	"changeme/api/models"
 	"changeme/api/utils"
 	"context"
-	"log"
+	"log/slog"
+	"os"
+	"runtime"
+	"time"
 
 	"github.com/adrg/xdg"
+	"github.com/lmittmann/tint"
+	"github.com/mattn/go-colorable"
+	"github.com/mattn/go-isatty"
 	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -30,18 +36,18 @@ func NewApp(name string) *App {
 // so we can call the runtime methods
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
-	a.startTimerEmit()
-	a.Db = InitSqliteDB(a.Name, "changeme.db")
+	InitLogger()
+	a.Db = InitSqliteDB(a.Name, a.Name+".db")
+	go a.startTimerEmit()
 	err := a.Migration()
 	if err != nil {
-		log.Println("Error Migrating DB:", err.Error())
+		slog.Error("Migrating DB", "err", err.Error())
 	}
 }
 
 func (a *App) Migration() error {
 	err := a.Db.AutoMigrate(&models.User{})
 	if err != nil {
-		log.Println("Error Migrating DB:", err.Error())
 		return err
 	}
 	return nil
@@ -52,22 +58,42 @@ func InitSqliteDB(dirName string, dbName string) *gorm.DB {
 	dir := xdg.DataHome + "/" + dirName
 	err = utils.CreateDir(dir)
 	if err != nil {
-		log.Println("Error Creating Directory:", err.Error())
+		slog.Error("Creating Directory", "err", err.Error())
 		return nil
 	}
 	db, err := gorm.Open(sqlite.Open(dir + "/" + dbName), &gorm.Config{})
 	if err != nil {
-		log.Println("Error Opening SqliteDB:", err.Error())
+		slog.Error("Opening SqliteDB", "err", err.Error())
 		return nil
 	}
+	slog.Info("SqliteDB Opened", "dir", dir, "db", dbName)
 	return db
 }
 
 func InitPostgresDB(Dbdriver, DbUser, DbPassword, DbPort, DbHost, DbName string) *gorm.DB {
 	db, err := gorm.Open(postgres.Open("host=myhost user=gorm password=gorm dbname=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai"), &gorm.Config{})
 	if err != nil {
-		log.Println("Error Opening PostgresDB:", err.Error())
+		slog.Error("Opening PostgresDB", "err", err.Error())
 		return nil
 	}
 	return db
+}
+
+func InitLogger() {
+	w:= os.Stderr
+	// Windows is annoying per usual
+	if runtime.GOOS == "windows" {
+		slog.SetDefault(slog.New(
+			tint.NewHandler(colorable.NewColorable(w), nil),
+		),
+	)}
+	// Every other OS
+	slog.SetDefault(slog.New( 
+		tint.NewHandler(w, &tint.Options{
+			Level: slog.LevelDebug,
+			TimeFormat: time.Kitchen,
+			NoColor: !isatty.IsTerminal(w.Fd()),
+		}),
+	))
+	slog.Info("Starting Logger...")
 }
