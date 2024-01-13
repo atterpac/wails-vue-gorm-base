@@ -23,6 +23,7 @@ type App struct {
 	ctx context.Context
 	Name string
 	Db  *gorm.DB
+	User models.User
 }
 
 // NewApp creates a new App application struct

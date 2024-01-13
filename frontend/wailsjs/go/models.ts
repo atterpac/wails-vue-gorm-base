@@ -37,6 +37,7 @@ export namespace models {
 	    first_name: string;
 	    username: string;
 	    email: string;
+	    jwt: string;
 	    password: string;
 	    // Go type: time
 	    modified_at: any;
@@ -55,6 +56,7 @@ export namespace models {
 	        this.first_name = source["first_name"];
 	        this.username = source["username"];
 	        this.email = source["email"];
+	        this.jwt = source["jwt"];
 	        this.password = source["password"];
 	        this.modified_at = this.convertValues(source["modified_at"], null);
 	        this.created_at = this.convertValues(source["created_at"], null);

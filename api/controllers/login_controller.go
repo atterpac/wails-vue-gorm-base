@@ -3,6 +3,7 @@ package controllers
 import (
 	"changeme/api/auth"
 	"changeme/api/models"
+	"log/slog"
 )
 
 
@@ -23,24 +24,36 @@ func (a *App) RegisterUser(reg models.Register) error {
 	return nil
 }
 
-func (a *App) LoginUser(login models.Login) (string, error) {
+func (a *App) LoginUser(login models.Login) error {
+	slog.Debug("Attempting to LoginUser", "username", login.Username)
 	err := login.Verify()
 	if err != nil {
-		return "", err
+		return err
 	}
+	slog.Debug("User Verified", "username", login.Username)
 	u, err := models.GetUserByUsername(a.Db, login.Username)
 	if err != nil {
-		return "", err
+		slog.Error("Getting User", "err", err.Error(), "username", login.Username)
+		return err
 	}
 	err = auth.VerifyPassword(u.Password, login.Password)
 	if err != nil {
-		return "", err
+		slog.Error("Verifying Password", "err", err.Error(), "username", login.Username)
+		return err
 	}
 	token, err := auth.CreateToken(u.Id)
 	if err != nil {
-		return "", err
+		slog.Error("Creating Token", "err", err.Error(), "username", login.Username)
+		return err
 	}
-	return token, nil
+	u.Jwt = token
+	err = u.Update(a.Db)
+	if err != nil {
+		slog.Error("Updating User", "err", err.Error())
+		return err
+	}
+	slog.Debug("User Logged In", "username", login.Username)
+	return nil
 }
 
 func (a *App) RefreshToken(staleToken string) (string, error) {

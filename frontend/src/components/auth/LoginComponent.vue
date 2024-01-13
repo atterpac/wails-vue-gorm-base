@@ -28,9 +28,8 @@ const user = ref<models.Login>({
  })
 
 const Submit = (user: models.Login) => {
-    LoginUser(user).then((res) => {
-        setCookie('jwtToken', res, 1);
-        console.log("token:"+ res);
+    LoginUser(user).then(() => {
+        console.log("Login Successful");
         router.push('/login');
     }).catch((err) => {
         console.log(err);
@@ -41,15 +40,6 @@ const onClick = (path: string) => {
     console.log('clicked');
     router.push(path);
 }
-
-// Function to set an HTTP-only cookie
-function setCookie(name: string, value: string, days: number) {
-    const expires = new Date();
-    expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
-    const cookieValue = `${name}=${value};expires=${expires.toUTCString()};path=/;`;
-    document.cookie = cookieValue;
-}
-
 </script>
 
 <style scoped>
