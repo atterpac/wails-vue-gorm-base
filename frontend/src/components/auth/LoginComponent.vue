@@ -30,8 +30,11 @@ const user = ref<models.Login>({
 const Submit = (user: models.Login) => {
     LoginUser(user).then((res) => {
         setCookie('jwtToken', res, 1);
+        console.log("token:"+ res);
         router.push('/login');
-    });
+    }).catch((err) => {
+        console.log(err);
+    })
 }
 
 const onClick = (path: string) => {
@@ -43,7 +46,7 @@ const onClick = (path: string) => {
 function setCookie(name: string, value: string, days: number) {
     const expires = new Date();
     expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
-    const cookieValue = `${name}=${value};expires=${expires.toUTCString()};path=/; Secure`;
+    const cookieValue = `${name}=${value};expires=${expires.toUTCString()};path=/;`;
     document.cookie = cookieValue;
 }
 

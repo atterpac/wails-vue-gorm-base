@@ -32,6 +32,10 @@ func (a *App) LoginUser(login models.Login) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	err = auth.VerifyPassword(u.Password, login.Password)
+	if err != nil {
+		return "", err
+	}
 	token, err := auth.CreateToken(u.Id)
 	if err != nil {
 		return "", err
