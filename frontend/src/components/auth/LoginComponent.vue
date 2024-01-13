@@ -8,7 +8,7 @@
                 <h1>Login</h1>
                 <input type='text' placeholder='Username' v-model="user.username"/>
                 <input type='password' placeholder='Password' v-model="user.password"/>
-                <button class='login-btn' @click="Submit()">Login</button>
+                <button class='login-btn' @click="Submit(user)">Login</button>
                 <button class='btn' @click="onClick('/register')">Register</button>
                 <button class='btn' @click="onClick('/reset')">Reset Password</button>
             </div>
@@ -18,22 +18,35 @@
 
 <script lang="ts" setup>
 import { router } from '../../router';
-import { CreateUser } from '../../../wailsjs/go/controllers/App';
+import { LoginUser } from '../../../wailsjs/go/controllers/App';
 import { models } from '../../../wailsjs/go/models';
 import { ref } from 'vue';
-const { User } = models;
 
+const user = ref<models.Login>({
+    username: '',
+    password: '',
+ })
 
-const user = ref<User | null>(null);
-
-const Submit = () => {
-    CreateUser(user);
+const Submit = (user: models.Login) => {
+    LoginUser(user).then((res) => {
+        setCookie('jwtToken', res, 1);
+        router.push('/login');
+    });
 }
 
 const onClick = (path: string) => {
     console.log('clicked');
     router.push(path);
 }
+
+// Function to set an HTTP-only cookie
+function setCookie(name: string, value: string, days: number) {
+    const expires = new Date();
+    expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
+    const cookieValue = `${name}=${value};expires=${expires.toUTCString()};path=/; Secure`;
+    document.cookie = cookieValue;
+}
+
 </script>
 
 <style scoped>

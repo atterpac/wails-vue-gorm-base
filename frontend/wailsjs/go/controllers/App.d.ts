@@ -4,7 +4,7 @@ import {models} from '../models';
 
 export function Count():Promise<number>;
 
-export function CreateUser(arg1:models.User):Promise<void>;
+export function CreateUser(arg1:models.Register):Promise<void>;
 
 export function DeleteUserById(arg1:string):Promise<void>;
 
@@ -14,13 +14,13 @@ export function GetUserById(arg1:string):Promise<models.User>;
 
 export function GetUsers():Promise<Array<models.User>>;
 
-export function LoginUser(arg1:models.User):Promise<string>;
+export function LoginUser(arg1:models.Login):Promise<string>;
 
 export function Migration():Promise<void>;
 
 export function RefreshToken(arg1:string):Promise<string>;
 
-export function RegisterUser(arg1:models.User):Promise<void>;
+export function RegisterUser(arg1:models.Register):Promise<void>;
 
 export function TimerMultiple():Promise<void>;
 

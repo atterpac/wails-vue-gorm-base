@@ -1,5 +1,37 @@
 export namespace models {
 	
+	export class Login {
+	    username: string;
+	    password: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new Login(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.username = source["username"];
+	        this.password = source["password"];
+	    }
+	}
+	export class Register {
+	    username: string;
+	    password: string;
+	    password2: string;
+	    email: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new Register(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.username = source["username"];
+	        this.password = source["password"];
+	        this.password2 = source["password2"];
+	        this.email = source["email"];
+	    }
+	}
 	export class User {
 	    id: number[];
 	    first_name: string;

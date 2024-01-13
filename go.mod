@@ -8,7 +8,10 @@ require (
 	github.com/adrg/xdg v0.4.0
 	github.com/golang-jwt/jwt/v5 v5.2.0
 	github.com/google/uuid v1.3.0
-	github.com/wailsapp/wails/v2 v2.7.0
+	github.com/lmittmann/tint v1.0.3
+	github.com/mattn/go-colorable v0.1.13
+	github.com/mattn/go-isatty v0.0.19
+	github.com/wailsapp/wails/v2 v2.7.1
 	golang.org/x/crypto v0.17.0
 	gorm.io/driver/postgres v1.5.4
 	gorm.io/driver/sqlite v1.5.4
@@ -32,8 +35,6 @@ require (
 	github.com/leaanthony/gosod v1.0.3 // indirect
 	github.com/leaanthony/slicer v1.6.0 // indirect
 	github.com/leaanthony/u v1.1.0 // indirect
-	github.com/mattn/go-colorable v0.1.13 // indirect
-	github.com/mattn/go-isatty v0.0.19 // indirect
 	github.com/mattn/go-sqlite3 v1.14.19 // indirect
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8 // indirect
 	github.com/pkg/errors v0.9.1 // indirect

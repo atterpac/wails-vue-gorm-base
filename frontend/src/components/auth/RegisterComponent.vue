@@ -6,9 +6,11 @@
             </div>
             <div class='login'>
                 <h1>Register</h1>
-                <input type='text' placeholder='Username'/>
-                <input type='password' placeholder='Password'/>
-                <button class='login-btn'>Register</button>  
+                <input type='text' placeholder='Username' v-model="user.username"/>
+                <input type='text' placeholder='Email' v-model="user.email"/>
+                <input type='password' placeholder='Password' v-model="user.password"/>
+                <input type='password' placeholder='Password' v-model="user.password2"/>
+                <button class='login-btn' @click="onSubmit(user)">Register</button>  
                 <button class='btn' @click="onClick('/login')">Login</button>
                 <button class='btn' @click="onClick('/reset')">Reset Password</button>
             </div>
@@ -18,6 +20,23 @@
 
 <script lang="ts" setup>
 import { router } from '../../router';
+import { models } from '../../../wailsjs/go/models';
+import { CreateUser } from '../../../wailsjs/go/controllers/App';
+import { ref } from 'vue';
+
+const user = ref<models.Register>({
+    username: '',
+    email: '',
+    password: '',
+    password2: ''
+});
+
+const onSubmit = (user: models.Register) => {
+    CreateUser(user).then((res) => {
+        console.log(res);
+        router.push('/login');
+    });
+}
 
 const onClick = (path: string) => {
     console.log('clicked');

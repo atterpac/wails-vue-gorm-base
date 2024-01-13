@@ -18,7 +18,7 @@ func CreateToken(user_id uuid.UUID) (string, error) {
 	claims := jwt.MapClaims{}
 	claims["authorized"] = true
 	claims["user_id"] = user_id
-	claims["exp"] = time.Now().Add(time.Minute * 30).Unix() //Token expires after 1 hour
+	claims["exp"] = time.Now().Add(time.Hour * 24).Unix() //Token expires after 1 hour
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString([]byte(os.Getenv("API_SECRET")))
 }
@@ -55,7 +55,6 @@ func ExtractToken(r *http.Request) string {
 }
 
 func ExtractTokenID(r *http.Request) (uint32, error) {
-
 	tokenString := ExtractToken(r)
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
